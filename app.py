@@ -9,10 +9,10 @@ from sqlalchemy.orm import joinedload
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_secret_key')
-app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'default_jwt_secret_key')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.sqlite'
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.sqlite'
 # app.config['SECRET_KEY'] = 'darkchaos'
 # app.config['JWT_SECRET_KEY'] = 'darkchaos'  # Add a secret key for JWT
 

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
@@ -8,10 +9,12 @@ from sqlalchemy.orm import joinedload
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.sqlite'
-app.config['SECRET_KEY'] = 'darkchaos'
-app.config['JWT_SECRET_KEY'] = 'darkchaos'  # Add a secret key for JWT
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default_secret_key')
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'default_jwt_secret_key')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.sqlite'
+# app.config['SECRET_KEY'] = 'darkchaos'
+# app.config['JWT_SECRET_KEY'] = 'darkchaos'  # Add a secret key for JWT
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
@@ -19,7 +22,7 @@ jwt = JWTManager(app)
 
 class User(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
 
@@ -31,7 +34,7 @@ class User(db.Model):
 
 class Post(db.Model):
     __tablename__ = 'post'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.String(500), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

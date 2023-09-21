@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity
 from sqlalchemy.orm import joinedload
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
@@ -148,7 +148,7 @@ def delete_post(post_id):
 
 @app.after_request
 def after_request(response):
-    response.headers.set('Access-Control-Allow-Origin', 'http://localhost:3000')
+    # response.headers.set('Access-Control-Allow-Origin', 'http://localhost:3000')
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
